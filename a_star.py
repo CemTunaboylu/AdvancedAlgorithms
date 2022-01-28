@@ -69,8 +69,12 @@ def recursive_dimension_builder(row, value, unwanted, u_value)->List:
         return t
                         
 
-def find_path_to_this_node(tensor, node):
+def find_path_to_this_node(tensor, node, pos_in_tensor_func):
         path = []
+        while node != None:
+                path.append(node)
+                node = pos_in_tensor_func(tensor, node)
+        return path
 
 def cost(*args, **kwargs):
         return 1
