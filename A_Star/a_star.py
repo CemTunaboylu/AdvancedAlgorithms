@@ -97,8 +97,8 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
         #     attr_name_for_indication, # example : wall:1, passable:0
              ):
         priority_queue = [start_node]
-        # nodes_set = set()
-        # nodes_set.add(start_node)
+        nodes_set = set()
+        nodes_set.add(start_node)
         cost_tensor = form_cost_tensor(tensor, unwanted_value)
         set_pos_in_tensor(cost_tensor, start_node, 0)
         f_tensor = form_f_tensor(tensor, unwanted_value)
@@ -120,10 +120,10 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
                                 set_pos_in_tensor(path_tensor, n, current_node)
                                 set_pos_in_tensor(cost_tensor, n, g_val)
                                 set_pos_in_tensor(f_tensor, n, (g_val+heuristic(n, target_node)))
-                                # if not n in nodes_set: # bottleneck was checking in heap which is O(n) but it seems heap check is faster?
-                                if not n in priority_queue: # bottleneck was checking in heap which is O(n)
+                                if not n in nodes_set: # bottleneck was checking in heap which is O(n) but it seems heap check is faster?
+                                # if not n in priority_queue: # bottleneck was checking in heap which is O(n)
                                         heapq.heappush(priority_queue, n)
-                                        # nodes_set.add(n)
+                                        nodes_set.add(n)
         if return_path_tensor:
                 return None, path_tensor
         return None

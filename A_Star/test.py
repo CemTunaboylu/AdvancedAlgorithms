@@ -74,7 +74,7 @@ def bottle_neck_test():
                         assert compare(p, target)
                 times[i] = time()-now
         avg_time = sum(times)/R
-        print(F"It took {avg_time} for {len(ms.items())} tests {R} times.")
+        print(F"It took {avg_time} for giant {(target.x, target.y)} {len(ms.items())} tests {R} times.")
 
 def no_shortest_path_2D():
         ms = get_variables_from_module_named('matrices')

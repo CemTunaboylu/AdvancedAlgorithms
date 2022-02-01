@@ -174,4 +174,4 @@ def form_giant(x=50, y=50):
     return mat
 
 
-giant = form_giant(75,75)
+giant = form_giant(100,100)

@@ -35,8 +35,6 @@ def pos_in_tensor(tensor, a):
                 v = v[coor]
         return v
 
-
-
 def set_pos_in_tensor(tensor, a, v):
         d = tensor
         for c in range(len(a)-1):
