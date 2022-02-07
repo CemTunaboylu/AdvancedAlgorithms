@@ -91,8 +91,10 @@ def no_shortest_path_2D():
 
 def namedtuple_repr(self):
         return "("+str(self.x) + ","+str(self.y) + ","+str(self.z) + ")"
-
 namedtuple.__repr__ = namedtuple_repr
+
+
+
 if __name__=="__main__":
         cube_shortest_path()
         import matrices
