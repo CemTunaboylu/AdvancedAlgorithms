@@ -88,9 +88,14 @@ def no_shortest_path_2D():
                 return_path_tensor=True
                 )
         assert p==None
+
+def namedtuple_repr(self):
+        return "("+str(self.x) + ","+str(self.y) + ","+str(self.z) + ")"
+
+namedtuple.__repr__ = namedtuple_repr
 if __name__=="__main__":
-        # cube_shortest_path()
+        cube_shortest_path()
         import matrices
-        # shortest_paths_2D_matrices()
-        # no_shortest_path_2D()
-        bottle_neck_test()
+        shortest_paths_2D_matrices()
+        no_shortest_path_2D()
+        # bottle_neck_test()

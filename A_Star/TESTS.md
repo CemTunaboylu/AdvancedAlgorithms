@@ -1,3 +1,8 @@
+# To Handle 
+- Priority Ordering should be updated with ` decrease_key() ` which is not supported in heapq. I should use my own heapm and implement the necessary functions.
+        - `push()` should return the index pushed
+        - `decrease_key()` should decrease the element in the given index 
+
 # Bottlenecks
 (75x75)
 A_Star took 0.015575466156005859 for 14 tests 100 times with the giant matrix

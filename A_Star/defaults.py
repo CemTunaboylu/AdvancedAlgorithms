@@ -1,4 +1,4 @@
-from cmath import sqrt
+from math import sqrt
 
 def compare_by_coordinates(a_p, b_p):
         for a,b in zip(a_p,b_p):
@@ -15,7 +15,7 @@ def cost(*args, **kwargs):
 def euclidean_distance(cur, tar):
         d = 0
         for c,t in zip(cur, tar):
-                d +=  pow(t-c,2)  
+                d +=  pow(abs(t-c),2)  
         return sqrt(d) 
 
 def manhattan_distance(cur, tar):

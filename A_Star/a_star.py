@@ -46,6 +46,14 @@ from defaults import *
 # is left to the user with a function parameterized here as pos_in_tensor_func. Using explicitly obj.x and so on
 # would have limited the dimension of the grid that can be fed. Hopefully, this A* search can work on tensors 
 # with all sorts of ranks 
+from dataclasses import dataclass, field
+from typing import Any
+
+@dataclass(order=True)
+class PrioritizedItem:
+    priority: float
+    item: Any=field #(compare=True)
+
 
 class Heuristic(Enum):
         EUCLIDEAN = euclidean_distance
@@ -96,7 +104,7 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
             return_path_tensor = False
         #     attr_name_for_indication, # example : wall:1, passable:0
              ):
-        priority_queue = [start_node]
+        priority_queue = [PrioritizedItem(0, start_node)]
         nodes_set = set()
         nodes_set.add(start_node)
         cost_tensor = form_cost_tensor(tensor, unwanted_value)
@@ -105,7 +113,7 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
         set_pos_in_tensor(f_tensor, start_node, heuristic(start_node, target_node))
         path_tensor = form_path_tensor(tensor, unwanted_value)
         while len(priority_queue) > 0:
-                current_node = heapq.heappop(priority_queue)
+                current_node = heapq.heappop(priority_queue).item
                 if compare_func(current_node, target_node):
                         if return_path_tensor:
                                 return current_node, path_tensor
@@ -119,11 +127,12 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
                         if g_val < pos_in_tensor(cost_tensor, n): # if the cost of getting to n is bigger than the current path, update
                                 set_pos_in_tensor(path_tensor, n, current_node)
                                 set_pos_in_tensor(cost_tensor, n, g_val)
-                                set_pos_in_tensor(f_tensor, n, (g_val+heuristic(n, target_node)))
+                                f = (g_val+heuristic(n, target_node))
+                                set_pos_in_tensor(f_tensor, n, f )
                                 if not n in nodes_set: # bottleneck was checking in heap which is O(n) but it seems heap check is faster?
                                 # if not n in priority_queue: # bottleneck was checking in heap which is O(n)
-                                        heapq.heappush(priority_queue, n)
-                                        nodes_set.add(n)
+                                        heapq.heappush(priority_queue, PrioritizedItem(f,n))
+                                        nodes_set.add(n) # I can have an element pointing to the pos in heap
         if return_path_tensor:
                 return None, path_tensor
         return None
