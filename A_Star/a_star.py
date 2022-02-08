@@ -62,7 +62,8 @@ class Heuristic(Enum):
         MANHATTAN = manhattan_distance
         MINKOWSKI = minkowski_distance
 
-INF_INT = pow(2,10000)
+# INF_INT = pow(2,10000)
+INF_INT = pow(2,5)
 # __cmp__ methods
 def form_cost_tensor(tensor, unwanted, u_value=None, value=INF_INT): # g()
         return recursive_dimension_builder(tensor, value, unwanted, u_value)
@@ -111,6 +112,7 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
         nodes_set = set()
         nodes_set.add(start_node)
         cost_tensor = form_cost_tensor(tensor, unwanted_value)
+        
         set_pos_in_tensor(cost_tensor, start_node, 0)
         f_tensor = form_f_tensor(tensor, unwanted_value)
         set_pos_in_tensor(f_tensor, start_node, heuristic(start_node, target_node))

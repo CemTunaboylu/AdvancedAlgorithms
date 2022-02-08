@@ -31,7 +31,9 @@ def minkowski_distance(cur, tar, p):
 
 def pos_in_tensor(tensor, a):
         v = tensor
+        # print("-"*20)
         for coor in a:
+                # print(f"v:{v}, coor: {coor}")
                 v = v[coor]
         return v
 
@@ -47,7 +49,7 @@ def two_n_directional_neighbors_in_n_d_space(p:tuple, t:tuple):
                 if p[dim] > 0: # as its nature 
                         n = tuple([ p[d] if d!=dim else p[d]-1 for d in range(len(p)) ]) 
                         n_l.append(type(p)(*n))
-                if p[dim] < t[dim]:
+                if p_dim < t_dim:
                         n = tuple([ p[d] if d!=dim else p[d]+1 for d in range(len(p)) ]) 
                         n_l.append(type(p)(*n))
         return n_l

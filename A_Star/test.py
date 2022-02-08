@@ -17,10 +17,35 @@ def recursive_dimension_builder_test():
         for o in other_cube:
                 print(o)
 
+
+point4D = namedtuple("point4D", ["x", "y", "z", "w"])
+from tesseract import tesseract
+def tesseract_shortest_path():
+        target = point4D(1,1,1,1)
+        p, t = a_star( 
+                point4D(0,0,0,0),
+                target,
+                tesseract,
+                1,
+                return_path_tensor=True
+                )
+        assert compare(p, target)
+        path = find_path_to_this_node(t, p)
+        sols = [[ point4D(1,1,1,1), point4D(1,1,1,0), point4D(1,1,0,0), point4D(0,1,0,0), point4D(0,0,0,0) ],
+                [ point4D(1,1,1,1), point4D(1,0,1,1), point4D(0,0,1,1), point4D(0,0,0,1), point4D(0,0,0,0) ]]
+        assert path in sols
+        print(f"Found {sols.index(path)}. path : {path}")
+
 cube = [        [[0,1,0],[0,1,1],[1,1,1]],
                 [[0,0,1],[1,0,1],[1,1,1]],
                 [[1,0,1],[1,0,1],[0,0,0]],
         ]
+
+unit_cube = [
+        [[0,0], [1,1]],
+        [[1,0], [1,0]],
+]
+
 point3D = namedtuple("point3D", ["x", "y", "z"])
 
 def cube_shortest_path():
@@ -35,6 +60,20 @@ def cube_shortest_path():
         assert compare(p, target)
         path = find_path_to_this_node(t, p)
         sol = [point3D(x=2, y=2, z=2), point3D(x=2, y=2, z=1), point3D(x=2, y=1, z=1), point3D(x=1, y=1, z=1), point3D(x=1, y=0, z=1), point3D(x=1, y=0, z=0), point3D(x=0, y=0, z=0)]
+        assert sol==path
+
+def unit_cube_shortest_path():
+        target = point3D(1,1,1)
+        p, t = a_star( 
+                point3D(0,0,0),
+                target,
+                unit_cube,
+                1,
+                return_path_tensor=True
+                )
+        assert compare(p, target)
+        path = find_path_to_this_node(t, p)
+        sol = [point3D(x=1, y=1, z=1), point3D(x=1, y=0, z=1), point3D(x=0, y=0, z=1), point3D(x=0, y=0, z=0)]
         assert sol==path
 
 point2D = namedtuple("point2D", ["x", "y"])
@@ -96,8 +135,10 @@ namedtuple.__repr__ = namedtuple_repr
 
 
 if __name__=="__main__":
-        cube_shortest_path()
-        import matrices
-        shortest_paths_2D_matrices()
-        no_shortest_path_2D()
+        # cube_shortest_path()
+        # import matrices
+        # shortest_paths_2D_matrices()
+        # no_shortest_path_2D()
         # bottle_neck_test()
+        # unit_cube_shortest_path()
+        tesseract_shortest_path()
