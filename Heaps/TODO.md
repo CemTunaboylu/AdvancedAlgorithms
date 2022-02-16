@@ -1,0 +1,2 @@
+- str and _nodestr methods
+- changing behavior of IndexErrors on demand

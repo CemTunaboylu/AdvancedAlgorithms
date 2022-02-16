@@ -35,7 +35,7 @@ After we find the goal node, we can follow along in reverse until we reach the s
 # getattr(obj, "string_repr_of_attribute")
 # setattr(obj, attrname, value)
 # Note: Comparisons sometimes involve calling user-defined code using .__lt__(). 
-# Calling user-defined methods in Python is a relatively slow operation compared with other 
+# Calling user-defined methods in Python is a relatively slow operation compared to other 
 # operations done in a heap, so this will usually be the bottleneck.
 
 import heapq
@@ -144,8 +144,6 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
                 return None, path_tensor
         return None
 
-# TO DO
-# use a set to track if an elm is in the priority_queue
 # built_in __cmp__ method in the class ?
 # def __cmp__(self, other):
         # return cmp(self.priority, other.priority)

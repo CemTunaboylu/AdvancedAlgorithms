@@ -5,6 +5,9 @@
 
 -`two_n_directional_neighbors_in_n_d_space` only handles cases where the target is on the other corner. 
 
+-`FibHeap` will take a `sortkey` function from the user, **A_Star** should take one as a parameter.
+- It also is not necessary anymore `push` method to return the index pushed since it is now handled within the Fibonacci Heap.
+
 # Bottlenecks
 (75x75)
 A_Star took 0.015575466156005859 for 14 tests 100 times with the giant matrix

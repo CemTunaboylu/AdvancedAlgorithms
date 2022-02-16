@@ -1,0 +1,12 @@
+- 5-9D tests
+- Pass to FibHeap
+- Further optimizations
+- Outside 
+        - `getattr(obj, "string_repr_of_attribute")`
+        - `setattr(obj, attrname, value)`
+        - Note: Comparisons sometimes involve calling user-defined code using `.__lt__()`. 
+        - Calling user-defined methods in Python is a relatively slow operation compared to other 
+        - operations done in a heap, so this will usually be the bottleneck.
+- Navigating with class methods
+- Operating on a string map 
+- Getting the dimensions of the grid. Now we assume that start and target points are each at one corner of the grid 
