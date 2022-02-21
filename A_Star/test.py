@@ -19,57 +19,53 @@ def recursive_dimension_builder_test():
 
 
 point4D = namedtuple("point4D", ["x", "y", "z", "w"])
-from tesseract import tesseract
-def tesseract_shortest_path():
+from spaces.four_d_spaces import elemental_tesseract as tesseract
+def four_d_shortest_path():
         target = point4D(1,1,1,1)
         p, t = a_star( 
                 point4D(0,0,0,0),
                 target,
                 tesseract,
                 1,
-                return_path_tensor=True
+                return_path_euclidean_n_space=True
                 )
         assert compare(p, target)
         path = find_path_to_this_node(t, p)
         sols = [[ point4D(1,1,1,1), point4D(1,1,1,0), point4D(1,1,0,0), point4D(0,1,0,0), point4D(0,0,0,0) ],
-                [ point4D(1,1,1,1), point4D(1,0,1,1), point4D(0,0,1,1), point4D(0,0,0,1), point4D(0,0,0,0) ]]
-        assert path in sols
+                [ point4D(1,1,1,1), point4D(1,0,1,1), point4D(0,0,1,1), point4D(0,0,0,1), point4D(0,0,0,0) ],
+                [ point4D(1,1,1,1), point4D(1,1,1,0), point4D(1,1,0,0), point4D(1,0,0,0), point4D(0,0,0,0) ]
+                ]
+        # print(f"Found {path}")
+        # print(f"sols : {sols}")
         print(f"Found {sols.index(path)}. path : {path}")
+        assert path in sols
 
-cube = [        [[0,1,0],[0,1,1],[1,1,1]],
-                [[0,0,1],[1,0,1],[1,1,1]],
-                [[1,0,1],[1,0,1],[0,0,0]],
-        ]
 
-unit_cube = [
-        [[0,0], [1,1]],
-        [[1,0], [1,0]],
-]
 
 point3D = namedtuple("point3D", ["x", "y", "z"])
+from spaces.three_d_spaces import cube, unit_cube
 
-def cube_shortest_path():
+def three_d_shortest_path():
         target = point3D(2,2,2)
         p, t = a_star( 
                 point3D(0,0,0),
                 target,
                 cube,
                 1,
-                return_path_tensor=True
+                return_path_euclidean_n_space=True
                 )
         assert compare(p, target)
         path = find_path_to_this_node(t, p)
         sol = [point3D(x=2, y=2, z=2), point3D(x=2, y=2, z=1), point3D(x=2, y=1, z=1), point3D(x=1, y=1, z=1), point3D(x=1, y=0, z=1), point3D(x=1, y=0, z=0), point3D(x=0, y=0, z=0)]
         assert sol==path
 
-def unit_cube_shortest_path():
         target = point3D(1,1,1)
         p, t = a_star( 
                 point3D(0,0,0),
                 target,
                 unit_cube,
                 1,
-                return_path_tensor=True
+                return_path_euclidean_n_space=True
                 )
         assert compare(p, target)
         path = find_path_to_this_node(t, p)
@@ -78,9 +74,11 @@ def unit_cube_shortest_path():
 
 point2D = namedtuple("point2D", ["x", "y"])
 
-def shortest_paths_2D_matrices():
+mod_for_2d = "two_d_spaces"
+
+def two_d_shortest_path():
         from time import time
-        ms = get_variables_from_module_named('matrices')
+        ms = get_variables_from_module_named(mod_for_2d)
         for k,m in ms.items():
                 target = point2D(len(m)-1, len(m[0])-1 )
                 p, t = a_star( 
@@ -88,7 +86,7 @@ def shortest_paths_2D_matrices():
                 target,
                 m,
                 1,
-                return_path_tensor=True
+                return_path_euclidean_n_space=True
                 )
                 if p:
                         assert compare(p, target)
@@ -96,7 +94,7 @@ def shortest_paths_2D_matrices():
 
 def bottle_neck_test():
         from time import time
-        ms = get_variables_from_module_named('matrices')
+        ms = get_variables_from_module_named(mod_for_2d)
         giant = ms['giant']
         R = 100
         times = [None]*R
@@ -113,32 +111,30 @@ def bottle_neck_test():
                         assert compare(p, target)
                 times[i] = time()-now
         avg_time = sum(times)/R
-        print(F"It took {avg_time} for giant {(target.x, target.y)} {len(ms.items())} tests {R} times.")
+        # print(F"It took {avg_time} for giant {(target.x, target.y)} {len(ms.items())} tests {R} times.")
 
 def no_shortest_path_2D():
-        ms = get_variables_from_module_named('matrices')
-        m = ms["x_no"]
-        target = point2D(len(m)-1, len(m[0])-1 )
-        p, t = a_star( 
-                point2D(0,0),
-                target,
-                m,
-                1,
-                return_path_tensor=True
-                )
-        assert p==None
+        ms = get_variables_from_module_named(mod_for_2d)
+        ms = { m:ms[m] for m in ms if "no_path" in m }
+        for n,m in ms.items():
+                target = point2D(len(m)-1, len(m[0])-1 )
+                p, t = a_star( 
+                        point2D(0,0),
+                        target,
+                        m,
+                        1,
+                        return_path_euclidean_n_space=True
+                        )
+                assert p==None
 
 def namedtuple_repr(self):
         return "("+str(self.x) + ","+str(self.y) + ","+str(self.z) + ")"
 namedtuple.__repr__ = namedtuple_repr
 
-
-
 if __name__=="__main__":
-        # cube_shortest_path()
-        # import matrices
-        # shortest_paths_2D_matrices()
-        # no_shortest_path_2D()
-        # bottle_neck_test()
-        # unit_cube_shortest_path()
-        tesseract_shortest_path()
+        three_d_shortest_path()
+        from spaces import two_d_spaces
+        two_d_shortest_path()
+        no_shortest_path_2D()
+        bottle_neck_test()
+        four_d_shortest_path()

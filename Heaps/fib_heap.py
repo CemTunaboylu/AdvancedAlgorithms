@@ -1,7 +1,7 @@
 from ast import Call
 from curses import keyname
 from email.generator import Generator
-from typing import Callable, Hashable, Iterable
+from typing import Callable, Hashable, Iterable, Any
 from collections import defaultdict
 
 # Damon Wischik : https://gitlab.developers.cam.ac.uk/djw1005/algorithms/-/blob/master/fibheap.py
@@ -20,11 +20,10 @@ class FibHeap:
                         self.degree = 0
                         self.ID = _id
                         self.key = _k
-                        self.loser = False 
+                        self.is_loser = False 
                         self.next_sibling = None
                         self.parent = None
                         self.prev_sibling = None
-
 
 
         def __init__(self, xs: Iterable[Hashable]=None,*, sort_key: Callable[[Hashable], float]  )->None:
@@ -41,7 +40,7 @@ class FibHeap:
         def push(self, x:Hashable)->None:
                 if x in self.values: # we have such a node, thus we should be decreasing its key if smaller than the one within the heap, or stop 
                         # raise IndexError(f"{x} is already in the heap")
-                        if self.values[x].key > self.key_func(x):
+                        if self.nodes[x].key > self.key_func(x):
                                 self.decrease_key(x)
                         return
                 self.values.add(x)
@@ -59,7 +58,7 @@ class FibHeap:
 
         def pop_min(self)->Hashable:
                 n = self._pop_min()
-                x = n.Id
+                x = n.ID
                 del self.nodes[x]
                 self.values.remove(x)
                 return x
@@ -67,7 +66,7 @@ class FibHeap:
         def __bool__(self) -> bool:
                 return (self.min_root is not None)
         def is_empty(self) -> bool:
-                return not self.bool()
+                return not self.__bool__()
 
         def __contains__(self, x:Hashable) -> bool:
                 return (x in self.values)
@@ -177,22 +176,22 @@ class FibHeap:
                 return t1
 
         @staticmethod
-        def _siblings(x : 'FibHeap.Node')-> Generator['FibHeap.Node', None, None]:
+        def _siblings(x : 'FibHeap.Node')-> Generator: #-> Generator['FibHeap.Node', None, None]
                 #next_u guarantees that when user messes with yielded u, we still have the next sibling no matter what
-                start, u, next_u = (x, x, x.next_sibilng) 
+                start, u, next_u = (x, x, x.next_sibling) 
                 yield u 
-                while next_u is not start:
+                while next_u != start:
                         u, next_u = (next_u, next_u.next_sibling)
                         yield u 
         
         def __str__(self) -> str:
-                if self.minroot is None:
+                if self.min_root is None:
                          return "Empty heap"
-                res = '\n'.join(self._nodestr(c) for c in FibHeap._siblings(self.minroot))
+                res = '\n'.join(self._nodestr(c) for c in FibHeap._siblings(self.min_root))
                 res = ['.'] + ['|'+r for r in res.splitlines()] + ["'"]
                 return '\n'.join(res)
         def _nodestr(self, n: 'FibHeap.Node') -> str:
-                self_str = f'{n.Id}({n.key})'
+                self_str = f'{n.ID}({n.key})'
                 if n.is_loser: self_str = '{'+self_str+'}'
                 if n.child is None:
                         return self_str

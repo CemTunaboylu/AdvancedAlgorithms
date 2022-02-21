@@ -1,5 +1,5 @@
 - 5-9D tests
-- Pass to FibHeap
+- [+] Pass to FibHeap
 - Further optimizations
 - Outside 
         - `getattr(obj, "string_repr_of_attribute")`
