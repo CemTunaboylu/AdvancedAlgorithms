@@ -2,6 +2,9 @@ from math import sqrt
 from typing import List, Tuple
 
 N_D_SPACE = [] 
+def n_d_space():
+        if N_D_SPACE: return N_D_SPACE
+        
 
 def set_n_d_space_global(to_this:List):
         globals()["N_D_SPACE"] = to_this
@@ -58,18 +61,19 @@ def discover_space_dimensions(n_d_space:List):
         dims = []
         space = n_d_space
         while isinstance(space, list):
-                dims.append(len(space))
+                # because we start from 0 when indexing
+                dims.append(len(space)-1)
                 space = space[0]
         
         return dims
 
-def two_n_directional_neighbors_in_n_d_space(p:tuple, t:tuple): 
+def two_n_directional_neighbors_in_n_d_space(p:tuple, space_dims:tuple): 
         n_l = []
-        for dim, (p_dim, t_dim) in enumerate(zip(p,t)):
+        for dim, (p_dim, s_dim) in enumerate(zip(p,space_dims)):
                 if p[dim] > 0: # as its nature 
                         n = tuple([ p[d] if d!=dim else p[d]-1 for d in range(len(p)) ]) 
                         n_l.append(type(p)(*n))
-                if p_dim < t_dim:
+                if p_dim < s_dim:
                         n = tuple([ p[d] if d!=dim else p[d]+1 for d in range(len(p)) ]) 
                         n_l.append(type(p)(*n))
         return n_l

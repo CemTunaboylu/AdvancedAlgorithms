@@ -77,6 +77,7 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
         set_pos_in_euclidean_n_space(cost_euclidean_n_space, start_node, 0)
         set_pos_in_euclidean_n_space(f_euclidean_n_space, start_node, heuristic(start_node, target_node))
         priority_queue = FibHeap([start_node], sort_key=key_func_for_fib_heap)
+        space_dimensions = discover_space_dimensions(euclidean_n_space)
 
         while not priority_queue.is_empty():
                 current_node = priority_queue.pop_min()
@@ -85,7 +86,7 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
                                 return current_node, path_euclidean_n_space
                         return current_node 
 
-                neighbors = n_d_neighbors(current_node, target_node)
+                neighbors = n_d_neighbors(current_node, space_dimensions)
                 for n in neighbors:
                         if value_in_euclidean_n_space(euclidean_n_space, n) == unwanted_value: # agent cannot navigate through, e.g. a wall   
                                 continue
