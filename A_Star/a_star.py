@@ -1,7 +1,7 @@
 from sys import path
 path.append("..")
 from Heaps.fib_heap import FibHeap
-from typing import List
+from typing import List, Union, Any
 from enum import Enum
 from defaults import *
 
@@ -69,7 +69,7 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
             set_pos_in_euclidean_n_space = set_pos_in_euclidean_n_space,
             return_path_euclidean_n_space = False
         #     attr_name_for_indication, # example : wall:1, passable:0
-             ):
+             )->Union[Any, List]:
         f_euclidean_n_space = form_f_euclidean_n_space(euclidean_n_space, unwanted_value)
         cost_euclidean_n_space = form_cost_euclidean_n_space(euclidean_n_space, unwanted_value)
         path_euclidean_n_space = form_path_euclidean_n_space(euclidean_n_space, unwanted_value)

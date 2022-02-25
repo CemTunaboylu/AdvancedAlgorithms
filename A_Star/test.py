@@ -1,9 +1,13 @@
-
 from collections import namedtuple
 
 from defaults import compare_by_coordinates as compare
 from a_star import recursive_dimension_builder, a_star, find_path_to_this_node
 from types import FunctionType
+from sys import path
+path.append("..")
+
+from visualization.space import plot_space
+
 
 def get_variables_from_module_named(module_name):
     module = globals().get(module_name, None)
@@ -43,21 +47,26 @@ def four_d_shortest_path():
 
 
 point3D = namedtuple("point3D", ["x", "y", "z"])
+# def _str_(self):
+#         "(" + "".join([c for c in self]) + "]"
+# point3D.__str__ = _str_
 from spaces.three_d_spaces import cube, unit_cube
 
 def three_d_shortest_path():
         target = point3D(2,2,2)
-        p, t = a_star( 
-                point3D(0,0,0),
+        start = point3D(0,0,0)
+        arrived_node, path = a_star( 
+                start,
                 target,
                 cube,
                 1,
                 return_path_euclidean_n_space=True
                 )
-        assert compare(p, target)
-        path = find_path_to_this_node(t, p)
+        assert compare(arrived_node, target)
+        path = find_path_to_this_node(path, arrived_node)
         sol = [point3D(x=2, y=2, z=2), point3D(x=2, y=2, z=1), point3D(x=2, y=1, z=1), point3D(x=1, y=1, z=1), point3D(x=1, y=0, z=1), point3D(x=1, y=0, z=0), point3D(x=0, y=0, z=0)]
         assert sol==path
+        plot_space(path, start, target, f"Shortest path \nfrom {start} \nto {target}" )
 
         target = point3D(1,1,1)
         p, t = a_star( 
@@ -133,8 +142,8 @@ namedtuple.__repr__ = namedtuple_repr
 
 if __name__=="__main__":
         three_d_shortest_path()
-        from spaces import two_d_spaces
-        two_d_shortest_path()
-        no_shortest_path_2D()
-        bottle_neck_test()
-        four_d_shortest_path()
+        # from spaces import two_d_spaces
+        # two_d_shortest_path()
+        # no_shortest_path_2D()
+        # bottle_neck_test()
+        # four_d_shortest_path()
