@@ -5,6 +5,7 @@ from a_star import recursive_dimension_builder, a_star, find_path_to_this_node
 from types import FunctionType
 from sys import path
 path.append("..")
+from defaults import discover_space_dimensions
 
 from visualization.space import plot_space
 
@@ -52,6 +53,7 @@ point3D = namedtuple("point3D", ["x", "y", "z"])
 # point3D.__str__ = _str_
 from spaces.three_d_spaces import cube, unit_cube
 
+
 def three_d_shortest_path():
         target = point3D(2,2,2)
         start = point3D(0,0,0)
@@ -66,7 +68,7 @@ def three_d_shortest_path():
         path = find_path_to_this_node(path, arrived_node)
         sol = [point3D(x=2, y=2, z=2), point3D(x=2, y=2, z=1), point3D(x=2, y=1, z=1), point3D(x=1, y=1, z=1), point3D(x=1, y=0, z=1), point3D(x=1, y=0, z=0), point3D(x=0, y=0, z=0)]
         assert sol==path
-        plot_space(path, start, target, f"Shortest path \nfrom {start} \nto {target}" )
+        plot_space(path, cube, discover_space_dimensions(cube) ,start, target, f"Shortest path \nfrom {start} \nto {target}" )
 
         target = point3D(1,1,1)
         p, t = a_star( 
