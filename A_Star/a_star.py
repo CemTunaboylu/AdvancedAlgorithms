@@ -73,12 +73,10 @@ def a_star( start_node, # n-D namedtuple/tuple (x,y,z,...)
         f_euclidean_n_space = form_f_euclidean_n_space(euclidean_n_space, unwanted_value)
         cost_euclidean_n_space = form_cost_euclidean_n_space(euclidean_n_space, unwanted_value)
         path_euclidean_n_space = form_path_euclidean_n_space(euclidean_n_space, unwanted_value)
-        set_n_d_space_global(f_euclidean_n_space)
         set_pos_in_euclidean_n_space(cost_euclidean_n_space, start_node, 0)
         set_pos_in_euclidean_n_space(f_euclidean_n_space, start_node, heuristic(start_node, target_node))
         priority_queue = FibHeap([start_node], sort_key=key_func_for_fib_heap)
         space_dimensions = discover_space_dimensions(euclidean_n_space)
-
         while not priority_queue.is_empty():
                 current_node = priority_queue.pop_min()
                 if compare_func(current_node, target_node):

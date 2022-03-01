@@ -1,12 +1,13 @@
 from collections import namedtuple
 
-from defaults import compare_by_coordinates as compare
-from a_star import recursive_dimension_builder, a_star, find_path_to_this_node
 from types import FunctionType
+from typing import List
 from sys import path
 path.append("..")
+from defaults import compare_by_coordinates as compare
+from a_star import recursive_dimension_builder, a_star, find_path_to_this_node
 from defaults import discover_space_dimensions
-
+from defaults import set_n_d_space_global
 from visualization.space import plot_space
 
 
@@ -57,6 +58,7 @@ from spaces.three_d_spaces import cube, unit_cube
 def three_d_shortest_path():
         target = point3D(2,2,2)
         start = point3D(0,0,0)
+        set_n_d_space_global(cube)
         arrived_node, path = a_star( 
                 start,
                 target,
@@ -66,10 +68,12 @@ def three_d_shortest_path():
                 )
         assert compare(arrived_node, target)
         path = find_path_to_this_node(path, arrived_node)
+        print(path)
         sol = [point3D(x=2, y=2, z=2), point3D(x=2, y=2, z=1), point3D(x=2, y=1, z=1), point3D(x=1, y=1, z=1), point3D(x=1, y=0, z=1), point3D(x=1, y=0, z=0), point3D(x=0, y=0, z=0)]
         assert sol==path
         plot_space(path, cube, discover_space_dimensions(cube) ,start, target, f"Shortest path \nfrom {start} \nto {target}" )
 
+        set_n_d_space_global(unit_cube)
         target = point3D(1,1,1)
         p, t = a_star( 
                 point3D(0,0,0),
@@ -143,6 +147,7 @@ def namedtuple_repr(self):
 namedtuple.__repr__ = namedtuple_repr
 
 if __name__=="__main__":
+        # set_n_d_space_global()
         three_d_shortest_path()
         # from spaces import two_d_spaces
         # two_d_shortest_path()
