@@ -8,7 +8,7 @@ When the string dictionary is known in advance (e.g. a computer virus database),
 In this case, its run time is linear in the length of the input plus the number of matched entries.
 """
 
-from collections import defaultdict, deque
+from collections import deque
 from trie import TrieNode
 from typing import Hashable, Iterable, List
 from sys import path
@@ -58,11 +58,13 @@ class ACNode(TrieNode):
 
     def __delitem__(self, key):
         del self.children[key]
+
     def __iter__(self):
         # if len(self) == 0: raise StopIteration
         keys = self.children.keys()
         for k in keys:
             yield k, self.children[k] # key, value
+
     def __len__(self): # substitutes has_children() method
         return len(self.children.keys())
 

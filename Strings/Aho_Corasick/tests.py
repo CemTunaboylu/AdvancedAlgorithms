@@ -25,6 +25,9 @@ def test_del(trie, words):
                 _, trie = delete(trie, w)
                 print(f"{w} deletion :  \t { SUCCESS if _ else FAIL} " )
 
+def test_print(trie):
+        print_trie(trie)
+
 if __name__ == "__main__":
         trie = TrieNode()
         words = ["hack", "hak", "hac"]
@@ -32,3 +35,4 @@ if __name__ == "__main__":
         test_find(trie, words)
         test_del(trie, ["hak"])
         test_find(trie, words)
+        test_print(trie)

@@ -1,5 +1,3 @@
-from ast import Call
-from curses import keyname
 from email.generator import Generator
 from typing import Callable, Hashable, Iterable, Any
 from collections import defaultdict

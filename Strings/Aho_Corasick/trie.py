@@ -1,10 +1,8 @@
 from collections import defaultdict
 from typing import Iterable, List, Tuple
+
 def no_key(*args, **kwargs): return None
 
-"""
-Can we implement TrieNode sich that TrieNode[x] gives the TrieNode.children[x]??
-"""
 class TrieNode:
         def __init__(self):
                 self.children = defaultdict(no_key)
@@ -24,7 +22,7 @@ def add(node:TrieNode, sequence:Iterable)->bool:
                         marcher.children[s] = create_node()
                 marcher = marcher.children[s]
 
-        if marcher.terminal: return False
+        if marcher.terminal: return False # already here
         marcher.terminal = True
         return marcher.terminal
 
@@ -34,7 +32,7 @@ def find(node:TrieNode, sequence:Iterable)->bool:
         marcher = node
         for s in sequence:
                 if marcher.children[s] == None: 
-                        del marcher.children[s] # defualtdict creates s : None key value pair when we check
+                        del marcher.children[s] # defaultdict creates s : None key value pair when we check
                         return False
                 marcher = marcher.children[s]
 
@@ -52,12 +50,13 @@ def has_children(node:TrieNode)->bool:
         return len(node.children.keys()) > 0
 
 def _delete(node:TrieNode, sequence:Iterable, success:List[bool])->TrieNode:
+        # We are cheating with the success list, to be able to pass the deletion result without returning, we needed a parameter that is given with reference.
         if not node : return node
-        if not sequence: # reached the end
-                if node.terminal: 
+        if not sequence: # reached the end, len(sequence) is 0 
+                if node.terminal: # if it is not terminal, then the sequence was not in the list in the first place
                         node.terminal = False
                         success[0] = True
-                if not has_children(node):
+                if not has_children(node): # if there is no children, this must be a terminal state. Each leaf is a terminal state in a trie.
                         del node
                         node = None
                 return node
